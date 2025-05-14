@@ -69,44 +69,50 @@ const SignalGenerator = () => {
         />
       </HStack>
 
-      {/* 波形类型选择按钮 */}
-      <HStack spacing={4} mt={4}>
+      {/* 波形类型选择滑块 */}
+      <HStack spacing={4} mt={4} style={{ backgroundColor: '#f0f0f0', padding: '8px', borderRadius: '8px' }}>
         <Button
-          colorScheme={waveType === 'sine' ? 'blue' : 'gray'}
           onClick={() => handleWaveTypeChange('sine')}
           w="120px"
+          style={{
+            backgroundColor: waveType === 'sine' ? '#000' : '#e2e8f0',
+            color: waveType === 'sine' ? 'white' : 'black',
+          }}
         >
           正弦波
         </Button>
         <Button
-          colorScheme={waveType === 'pulse' ? 'blue' : 'gray'}
           onClick={() => handleWaveTypeChange('pulse')}
           w="120px"
+          style={{
+            backgroundColor: waveType === 'pulse' ? '#000' : '#e2e8f0',
+            color: waveType === 'pulse' ? 'white' : 'black',
+          }}
         >
           脉冲波
         </Button>
       </HStack>
 
       {/* 频率调整 */}
-      <HStack >
+      <HStack>
         <Button onClick={() => setFrequency((prev) => { const newValue = prev - 100; sendDataToBackend('frequency', newValue); return newValue; })}>频率减</Button>
-        <Input 
-          value={frequency} 
+        <Input
+          value={frequency}
           onChange={handleFrequencyChange}
-          w="120px" 
-          textAlign="center" 
+          w="120px"
+          textAlign="center"
         />
         <Button onClick={() => setFrequency((prev) => { const newValue = prev + 100; sendDataToBackend('frequency', newValue); return newValue; })}>频率增</Button>
       </HStack>
 
       {/* 幅度调整 */}
-      <HStack >
+      <HStack>
         <Button onClick={() => setAmplitude((prev) => { const newValue = prev - 0.1; sendDataToBackend('amplitude', newValue); return newValue; })}>幅度减</Button>
-        <Input 
-          value={amplitude} 
+        <Input
+          value={amplitude}
           onChange={handleAmplitudeChange}
-          w="120px" 
-          textAlign="center" 
+          w="120px"
+          textAlign="center"
         />
         <Button onClick={() => setAmplitude((prev) => { const newValue = prev + 0.1; sendDataToBackend('amplitude', newValue); return newValue; })}>幅度增</Button>
       </HStack>
@@ -114,24 +120,22 @@ const SignalGenerator = () => {
       {/* 占空比调整 */}
       <HStack>
         <Button onClick={() => setDuty((prev) => { const newValue = prev - 5; sendDataToBackend('duty', newValue); return newValue; })}>占空比减</Button>
-        <Input 
-          value={duty} 
+        <Input
+          value={duty}
           onChange={handleDutyChange}
-          w="120px" 
-          textAlign="center" 
+          w="120px"
+          textAlign="center"
         />
         <Button onClick={() => setDuty((prev) => { const newValue = prev + 5; sendDataToBackend('duty', newValue); return newValue; })}>占空比增</Button>
       </HStack>
 
-
-
       {/* 动画波形展示 (占位区) */}
-      <Box 
-        w="100%" 
-        h="200px" 
-        bg="gray.200" 
-        border="1px solid #ccc" 
-        mt={4} 
+      <Box
+        w="100%"
+        h="200px"
+        bg="gray.200"
+        border="1px solid #ccc"
+        mt={4}
         textAlign="center"
       >
         {/* 未来动画波形可以在这里填充 */}
