@@ -107,14 +107,14 @@ const SignalGenerator = () => {
 
       {/* 幅度调整 */}
       <HStack>
-        <Button onClick={() => setAmplitude((prev) => { const newValue = prev - 0.1; sendDataToBackend('amplitude', newValue); return newValue; })}>幅度减</Button>
+        <Button onClick={() => setAmplitude((prev) => { const newValue = prev - 1; sendDataToBackend('amplitude', newValue); return newValue; })}>幅度减</Button>
         <Input
           value={amplitude}
           onChange={handleAmplitudeChange}
           w="120px"
           textAlign="center"
         />
-        <Button onClick={() => setAmplitude((prev) => { const newValue = prev + 0.1; sendDataToBackend('amplitude', newValue); return newValue; })}>幅度增</Button>
+        <Button onClick={() => setAmplitude((prev) => { const newValue = prev + 1; sendDataToBackend('amplitude', newValue); return newValue; })}>幅度增</Button>
       </HStack>
 
       {/* 占空比调整 */}
