@@ -9,20 +9,31 @@ const SignalGenerator = () => {
   const [amplitude, setAmplitude] = useState(1)    // 初始幅度 1
   const [duty, setDuty] = useState(50)             // 初始占空比 50%
   const [waveType, setWaveType] = useState('sine') // 默认正弦波
-  const [apiAddress, setApiAddress] = useState('http://localhost:5000') // 默认 API 地址
+  const [apiAddress, setApiAddress] = useState('192.168.182.46') // 默认 API 地址
 
   // 发送数据到后端
   const sendDataToBackend = (key, value) => {
+    // 确保 API 地址是完整的 URL
+    let fullApiAddress = apiAddress;
+    if (!apiAddress.startsWith("http://") && !apiAddress.startsWith("https://")) {
+      fullApiAddress = `http://${apiAddress}/control`;
+    } else {
+      fullApiAddress = `${apiAddress}/control`;
+    }
+
     const payload = {
       frequency,
       amplitude,
       duty,
       waveType,
       [key]: value,
-    }
+    };
+
+    console.log("发送请求到:", fullApiAddress);
+    console.log("请求数据:", payload);
 
     axios
-      .post(apiAddress, payload)
+      .post(fullApiAddress, payload)
       .then((response) => {
         console.log('数据已发送:', response.data)
       })
@@ -39,10 +50,18 @@ const SignalGenerator = () => {
   }
 
   const handleAmplitudeChange = (e) => {
-    const value = Number(e.target.value)
-    setAmplitude(value)
-    sendDataToBackend('amplitude', value)
+    const value = parseFloat(Number(e.target.value).toFixed(1)); // 限制为1位小数
+    setAmplitude(value);
+    sendDataToBackend('amplitude', value);
   }
+
+  const adjustAmplitude = (delta) => {
+    setAmplitude((prev) => {
+      const newValue = parseFloat((prev + delta).toFixed(1)); // 限制为1位小数
+      sendDataToBackend('amplitude', newValue);
+      return newValue;
+    });
+  };
 
   const handleDutyChange = (e) => {
     const value = Number(e.target.value)
@@ -107,14 +126,14 @@ const SignalGenerator = () => {
 
       {/* 幅度调整 */}
       <HStack>
-        <Button onClick={() => setAmplitude((prev) => { const newValue = prev - 1; sendDataToBackend('amplitude', newValue); return newValue; })}>幅度减</Button>
+        <Button onClick={() => adjustAmplitude(-0.1)}>幅度减</Button>
         <Input
           value={amplitude}
           onChange={handleAmplitudeChange}
           w="120px"
           textAlign="center"
         />
-        <Button onClick={() => setAmplitude((prev) => { const newValue = prev + 1; sendDataToBackend('amplitude', newValue); return newValue; })}>幅度增</Button>
+        <Button onClick={() => adjustAmplitude(0.1)}>幅度增</Button>
       </HStack>
 
       {/* 占空比调整 */}
